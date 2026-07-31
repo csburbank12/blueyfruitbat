@@ -1,0 +1,9 @@
+.options {
+  width: 420px;
+  padding: 24px;
+}
+
+#save-btn {
+  width: auto;
+  padding: 8px 20px;
+}

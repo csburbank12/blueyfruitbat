@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Sub Plan Generator — Settings</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="options.css" />
+</head>
+<body>
+  <div class="options">
+    <h1>Settings</h1>
+
+    <div class="field">
+      <label for="api-key">Anthropic API key</label>
+      <input type="password" id="api-key" placeholder="sk-ant-..." autocomplete="off" />
+      <p class="hint">
+        Used to generate sub plans. Stored only on this device.
+        Get a key from <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">console.anthropic.com</a>.
+      </p>
+    </div>
+
+    <button id="save-btn" class="btn">Save</button>
+    <p id="save-status" class="hint"></p>
+  </div>
+
+  <script src="../lib/config.js"></script>
+  <script src="../lib/storage.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>
