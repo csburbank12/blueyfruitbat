@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Sub Plan Generator</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="popup">
+    <header class="popup-header">
+      <h1>Sub Plan Generator</h1>
+      <a href="#" id="settings-link" title="Settings">⚙️</a>
+    </header>
+
+    <p id="usage-note" class="status-banner"></p>
+    <p id="error-banner" class="error-banner" hidden></p>
+
+    <!-- Form: teachers can always fill this out, free or paid. -->
+    <section id="form-section">
+      <form id="plan-form">
+        <div class="field">
+          <label for="grade-level">Grade level</label>
+          <input type="text" id="grade-level" placeholder="e.g. 4th grade" required />
+        </div>
+        <div class="field">
+          <label for="subject">Subject / class</label>
+          <input type="text" id="subject" placeholder="e.g. Math, Room 12" required />
+        </div>
+        <div class="field">
+          <label for="class-duration">Class length</label>
+          <input type="text" id="class-duration" placeholder="e.g. 50 minutes" required />
+        </div>
+        <div class="field">
+          <label for="notes">Notes for the substitute (optional)</label>
+          <textarea id="notes" placeholder="Where we left off, seating chart notes, anything a sub should know…"></textarea>
+        </div>
+        <button type="submit" id="generate-btn" class="btn">Generate Plan</button>
+      </form>
+    </section>
+
+    <!-- Generated plan -->
+    <section id="result-section" hidden>
+      <div id="plan-output" class="plan-output"></div>
+      <div class="result-actions">
+        <button id="copy-btn" class="btn btn-secondary">Copy</button>
+        <button id="back-btn" class="btn btn-secondary">New Plan</button>
+      </div>
+    </section>
+
+    <!-- Paywall: only shown when a free user hits Generate after using all 3. -->
+    <section id="paywall-section" hidden>
+      <h2>You've used your 3 free plans</h2>
+      <p>Upgrade to keep generating sub plans all year.</p>
+
+      <div class="pricing-cards">
+        <div class="price-card">
+          <div class="price-card-label">Monthly</div>
+          <div class="price-card-amount">$5<span>/mo</span></div>
+        </div>
+        <div class="price-card price-card-best">
+          <div class="price-card-badge">Best value</div>
+          <div class="price-card-label">Annual</div>
+          <div class="price-card-amount">$29<span>/yr</span></div>
+        </div>
+      </div>
+
+      <button id="upgrade-btn" class="btn">Upgrade to Pro</button>
+      <p class="hint">
+        Already paid? <a href="#" id="restore-link">Restore purchase</a>
+      </p>
+      <p id="restore-status" class="hint"></p>
+    </section>
+  </div>
+
+  <script src="../lib/config.js"></script>
+  <script src="../lib/ExtPay.js"></script>
+  <script src="../lib/storage.js"></script>
+  <script src="../lib/payment.js"></script>
+  <script src="../lib/anthropic.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
