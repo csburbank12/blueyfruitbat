@@ -23,8 +23,11 @@ async function getCachedPaymentStatus() {
   return paymentStatusCache || null;
 }
 
-async function setCachedPaymentStatus(paid) {
-  const paymentStatusCache = { paid, checkedAt: Date.now() };
+// `failed: true` marks a fail-open result (the check errored or timed out
+// rather than the server telling us the user is paid). It's cached on a much
+// shorter TTL — see PAYMENT_FAILURE_CACHE_MS.
+async function setCachedPaymentStatus(paid, failed = false) {
+  const paymentStatusCache = { paid, failed, checkedAt: Date.now() };
   await chrome.storage.local.set({ paymentStatusCache });
   return paymentStatusCache;
 }

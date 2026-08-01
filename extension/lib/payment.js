@@ -13,9 +13,15 @@ function withTimeout(promise, ms) {
 // Returns true/false. Uses the cached value when it's fresh; otherwise asks
 // ExtensionPay. If the check errors or times out, fails OPEN (returns true)
 // so a flaky connection never blocks a paying teacher — see README.
+//
+// Fail-open results are cached too, on the shorter PAYMENT_FAILURE_CACHE_MS.
+// Without that, an ExtensionPay outage makes every single check pay the full
+// timeout again (popup open, Generate click, post-generate refresh), which
+// stacked up to ~10s of dead time in testing.
 async function isPaidUser({ forceRefresh = false } = {}) {
   const cached = await getCachedPaymentStatus();
-  const isFresh = cached && (Date.now() - cached.checkedAt < PAYMENT_STATUS_CACHE_MS);
+  const ttl = cached && cached.failed ? PAYMENT_FAILURE_CACHE_MS : PAYMENT_STATUS_CACHE_MS;
+  const isFresh = cached && (Date.now() - cached.checkedAt < ttl);
   if (isFresh && !forceRefresh) {
     return cached.paid;
   }
@@ -25,6 +31,7 @@ async function isPaidUser({ forceRefresh = false } = {}) {
     return !!user.paid;
   } catch (err) {
     console.warn('[SubPlanGenerator] ExtensionPay check failed, failing open:', err);
+    await setCachedPaymentStatus(true, true);
     return true;
   }
 }

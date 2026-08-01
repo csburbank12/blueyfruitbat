@@ -45,7 +45,12 @@ the Anthropic API, gated by a free/paid tier through
 - **Fail open**: if the ExtensionPay check errors or takes longer than 5s
   (`PAYMENT_CHECK_TIMEOUT_MS`), `isPaidUser()` returns `true`. A paying
   teacher blocked by a flaky network check on a Monday morning is worse
-  than an occasional freebie.
+  than an occasional freebie. A fail-open result is cached as
+  `{paid: true, failed: true}` on the much shorter
+  `PAYMENT_FAILURE_CACHE_MS` (1 min), so an outage costs one timeout for
+  the whole popup session rather than one per check — while keeping the
+  free-ride window short if the user is genuinely unpaid. "Restore
+  purchase" passes `forceRefresh` and ignores the cache entirely.
 - Funnel counters (`chrome.storage.local.funnelCounters`): `generations_used`,
   `paywall_shown`, `payment_page_opened`.
 

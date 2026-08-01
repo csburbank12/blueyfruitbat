@@ -13,6 +13,12 @@ const FREE_GENERATION_LIMIT = 3;
 // ExtensionPay's servers on every popup open or keystroke.
 const PAYMENT_STATUS_CACHE_MS = 30 * 60 * 1000; // 30 minutes
 
+// How long a *failed* check stays cached. Failures fail open (see payment.js),
+// so this is deliberately short: long enough that one ExtensionPay outage costs
+// a single timeout instead of one per check, short enough that it doesn't hand
+// a genuinely unpaid user a long free ride.
+const PAYMENT_FAILURE_CACHE_MS = 60 * 1000; // 1 minute
+
 // How long to wait on an ExtensionPay check before failing open.
 const PAYMENT_CHECK_TIMEOUT_MS = 5000;
 
